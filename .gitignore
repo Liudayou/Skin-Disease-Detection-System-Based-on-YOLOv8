@@ -52,3 +52,9 @@ Experiment/evaluation_plots/
 .Trashes
 ehthumbs.db
 Thumbs.db
+Experiment/dataset/
+runs/
+__pycache__/
+*.pt
+*.pth
+.ipynb_checkpoints/

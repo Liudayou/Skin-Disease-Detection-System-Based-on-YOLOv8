@@ -1,0 +1,40 @@
+# 数据集（不上传）
+dataset/
+
+# 训练产物
+runs/
+runs/detect/
+
+# 权重文件（太大，不上传）
+weights/
+
+# 评估图表（太大）
+evaluation_plots/
+
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+
+# Jupyter 缓存
+*.ipynb_checkpoints/
+.ipynb_checkpoints/
+
+# Node.js
+node_modules/
+dist/
+
+# 虚拟环境
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+
+# 系统
+.DS_Store
+Thumbs.db
+
+# 日志
+*.log

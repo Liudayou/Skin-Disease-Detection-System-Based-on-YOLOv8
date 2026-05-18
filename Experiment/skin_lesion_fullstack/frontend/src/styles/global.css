@@ -1,0 +1,129 @@
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Helvetica,
+    Arial, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f0 100%);
+  color: #303133;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar ─────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: #c0c4cc;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #909399;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ── Medical disclaimer ────────────────────── */
+.medical-disclaimer {
+  font-size: 12px;
+  color: #e6a23c;
+  line-height: 1.6;
+  background: rgba(230, 162, 60, 0.06);
+  border-left: 3px solid #e6a23c;
+  padding: 8px 14px;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 16px;
+}
+
+/* ── Global card refinements ───────────────── */
+.el-card {
+  border: none;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04) !important;
+  border-radius: 12px !important;
+  transition: box-shadow 0.3s ease;
+}
+.el-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+}
+.el-card__header {
+  font-weight: 600;
+  font-size: 15px;
+  color: #1a1a2e;
+  border-bottom: 1px solid #f0f2f5;
+  padding: 16px 20px;
+}
+.el-card__body {
+  padding: 20px;
+}
+
+/* ── Upload area ───────────────────────────── */
+.el-upload-dragger {
+  border: 2px dashed #d9dce5 !important;
+  border-radius: 12px !important;
+  background: #fafbfc !important;
+  transition: all 0.3s ease !important;
+  padding: 40px 20px !important;
+}
+.el-upload-dragger:hover {
+  border-color: #409eff !important;
+  background: rgba(64, 158, 255, 0.03) !important;
+}
+
+/* ── Table refinements ─────────────────────── */
+.el-table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+.el-table th.el-table__cell {
+  background: #f8f9fb !important;
+  font-weight: 600;
+  color: #606266;
+}
+
+/* ── Tag enhancements ──────────────────────── */
+.el-tag {
+  border-radius: 6px;
+}
+
+/* ── Button enhancements ───────────────────── */
+.el-button--primary {
+  background: linear-gradient(135deg, #409eff 0%, #3a7bd5 100%);
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(64, 158, 255, 0.3);
+  transition: all 0.3s ease;
+}
+.el-button--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.4);
+}
+
+/* ── Slider enhancements ───────────────────── */
+.el-slider__runway {
+  background: #e8ecf1;
+}
+
+/* ── Animations ────────────────────────────── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.4s ease-out;
+}

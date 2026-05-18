@@ -1,0 +1,37 @@
+# YOLOv8m (head) + MobileNetV3-Large backbone (timm)
+# Default mapping: reductions 8/16/32 -> P3/P4/P5.
+
+nc: 7
+
+backbone:
+  # [from, repeats, module, args]
+  - [-1, 1, MobileNetV3LargeBackbone, [False, [2, 3, 4]]]  # 0 -> [P3, P4, P5]
+  # Use Ultralytics built-in Index module (special-cased in parse_model): args=[c2, index]
+  - [0, 1, Index, [40, 0]]    # 1: P3/8  (C=40)
+  - [0, 1, Index, [112, 1]]   # 2: P4/16 (C=112)
+  - [0, 1, Index, [960, 2]]   # 3: P5/32 (C=960)
+
+  # Channel alignment for YOLOv8m neck/head
+  - [1, 1, Conv, [256, 1, 1]]   # 4: P3 aligned
+  - [2, 1, Conv, [512, 1, 1]]   # 5: P4 aligned
+  - [3, 1, Conv, [1024, 1, 1]]  # 6: P5 aligned
+
+head:
+  - [6, 1, nn.Upsample, [None, 2, "nearest"]]  # 7
+  - [[-1, 5], 1, Concat, [1]]                  # 8 cat P4
+  - [-1, 3, C2f, [512]]                        # 9
+
+  - [-1, 1, nn.Upsample, [None, 2, "nearest"]] # 10
+  - [[-1, 4], 1, Concat, [1]]                  # 11 cat P3
+  - [-1, 3, C2f, [256]]                        # 12 (P3/8-small)
+
+  - [-1, 1, Conv, [256, 3, 2]]                 # 13 down
+  - [[-1, 9], 1, Concat, [1]]                  # 14 cat head P4
+  - [-1, 3, C2f, [512]]                        # 15 (P4/16-medium)
+
+  - [-1, 1, Conv, [512, 3, 2]]                 # 16 down
+  - [[-1, 6], 1, Concat, [1]]                  # 17 cat P5
+  - [-1, 3, C2f, [1024]]                       # 18 (P5/32-large)
+
+  - [[12, 15, 18], 1, Detect, [nc]]            # 19 Detect(P3, P4, P5)
+

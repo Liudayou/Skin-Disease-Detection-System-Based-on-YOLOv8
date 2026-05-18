@@ -1,0 +1,54 @@
+# YOLOv8m + CBAM neck — 减参约 20% 草案（只改 Ultralytics scales.m 的 width_multiple）
+#
+# 与 yolov8m_cbam_neck.yaml 的唯一结构差异：scales.m 由 [0.67, 0.75, 768] 改为 [0.67, 0.664, 768]
+# 参数量（在本地用 Ultralytics 构建 yolov8m*.yaml 统计）：约 20,989,096，相对 width=0.75 的 25,985,976 约 -19.2%。
+# 因通道取整，width 在约 0.66~0.664 区间可能出现平台；若必须 ≥20%，可把第二项改为 0.656（约 -23%，需重训验证精度）。
+#
+# 训练示例：
+#   python train_yolov8m_cbam_neck.py --model-cfg models/yolov8m_cbam_neck_width0664.yaml --run-name yolov8m_cbam_neck_w0664_ham_univ30_augMM
+#
+# 预训练权重仍用 yolov8m.pt；减宽后首层可能对不齐，交给 Ultralytics 跳过不匹配层即可。
+
+nc: 80
+scales:
+  n: [0.33, 0.25, 1024]
+  s: [0.33, 0.50, 1024]
+  m: [0.67, 0.664, 768]
+  l: [1.00, 1.00, 512]
+  x: [1.00, 1.25, 512]
+
+backbone:
+  - [-1, 1, Conv, [64, 3, 2]] # 0-P1/2
+  - [-1, 1, Conv, [128, 3, 2]] # 1-P2/4
+  - [-1, 3, C2f, [128, True]]
+  - [-1, 1, Conv, [256, 3, 2]] # 3-P3/8
+  - [-1, 6, C2f, [256, True]]
+  - [-1, 1, Conv, [512, 3, 2]] # 5-P4/16
+  - [-1, 6, C2f, [512, True]]
+  - [-1, 1, Conv, [1024, 3, 2]] # 7-P5/32
+  - [-1, 3, C2f, [1024, True]]
+  - [-1, 1, SPPF, [1024, 5]] # 9
+
+head:
+  - [-1, 1, nn.Upsample, [None, 2, "nearest"]]
+  - [[-1, 6], 1, Concat, [1]] # cat backbone P4
+  - [-1, 3, C2f, [512]] # 12
+  - [-1, 1, CBAM, [16, 7]]
+
+  - [-1, 1, nn.Upsample, [None, 2, "nearest"]]
+  - [[-1, 4], 1, Concat, [1]] # cat backbone P3
+  - [-1, 3, C2f, [256]] # 16 (P3/8-small)
+  - [-1, 1, CBAM, [16, 7]]
+
+  - [-1, 1, Conv, [256, 3, 2]]
+  - [[-1, 12], 1, Concat, [1]] # cat head P4
+  - [-1, 3, C2f, [512]] # 20 (P4/16-medium)
+  - [-1, 1, CBAM, [16, 7]]
+
+  - [-1, 1, Conv, [512, 3, 2]]
+  - [[-1, 9], 1, Concat, [1]] # cat head P5
+  - [-1, 3, C2f, [1024]] # 24 (P5/32-large)
+  - [-1, 1, CBAM, [16, 7]]
+
+  - [[16, 20, 24], 1, Detect, [nc]] # Detect(P3, P4, P5)
+

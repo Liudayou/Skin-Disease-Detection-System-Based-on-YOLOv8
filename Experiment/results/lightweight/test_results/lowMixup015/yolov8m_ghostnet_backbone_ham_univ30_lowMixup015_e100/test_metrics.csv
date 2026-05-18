@@ -1,0 +1,2 @@
+run_name,map50,map,map75,weights,data_yaml
+yolov8m_ghostnet_backbone_ham_univ30_lowMixup015_e100,0.7947229266545629,0.5145848419791658,0.5215437702302674,/root/autodl-tmp/GraduationDesign/autodl-tmp/GraduationProject/runs/detect/00_data_augmentation/yolov8m_ghostnet_backbone_ham_univ30_lowMixup015_e100/weights/best.pt,/root/autodl-tmp/GraduationDesign/autodl-tmp/GraduationProject/GraduationResults/00_data_augmentation/yolov8m_ghostnet_backbone_ham_univ30_lowMixup015_e100/data_runtime_test.yaml

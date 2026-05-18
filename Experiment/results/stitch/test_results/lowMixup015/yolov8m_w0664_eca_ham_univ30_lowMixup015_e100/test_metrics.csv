@@ -1,0 +1,2 @@
+split,mAP50,mAP50_95,precision_mean,recall_mean,weights,data_yaml
+test,0.7936876462446077,0.5134299763704868,0.7133106443847917,0.7828303314488166,/root/autodl-tmp/ExperimentCatalog_HAM_YOLOv8/runs/detect/stitch/train_results/lowMixup015/yolov8m_w0664_eca_ham_univ30_lowMixup015_e100/weights/best.pt,/root/autodl-tmp/ExperimentCatalog_HAM_YOLOv8/results/stitch/train_results/lowMixup015/yolov8m_w0664_eca_ham_univ30_lowMixup015_e100/data_runtime.yaml

@@ -1,0 +1,2 @@
+split,mAP50,mAP50_95,precision_mean,recall_mean,weights,data_yaml
+test,0.7856946162845689,0.5053622187459101,0.736895706685112,0.7755827342365053,/root/autodl-tmp/ExperimentCatalog_HAM_YOLOv8/runs/detect/model_scaling/yolov8m/train_results/tightScale03/yolov8m_tightScale03_ham_univ30_e100/weights/best.pt,/root/autodl-tmp/ExperimentCatalog_HAM_YOLOv8/results/augmentation/train_results/data_aug/tightScale03/yolov8m_tightScale03_ham_univ30_e100/data_runtime.yaml

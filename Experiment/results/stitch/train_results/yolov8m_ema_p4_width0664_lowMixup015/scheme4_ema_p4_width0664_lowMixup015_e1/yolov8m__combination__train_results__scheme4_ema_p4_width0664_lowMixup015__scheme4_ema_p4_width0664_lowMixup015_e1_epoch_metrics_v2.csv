@@ -1,0 +1,1 @@
+﻿model_name,epoch,mAP50,mAP50_95,precision_mean,recall_mean,f1_mean,params,GFLOPs,data_aug_runner_explicit

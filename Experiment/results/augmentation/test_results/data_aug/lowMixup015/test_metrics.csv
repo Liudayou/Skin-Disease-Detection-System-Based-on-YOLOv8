@@ -1,0 +1,2 @@
+run_name,map50,map,map75,weights,data_yaml
+yolov8m_aug_lowMixup015_ham_univ30_augMM_e100,0.8027119685595385,0.5098822440623463,0.5206374062101057,D:\GraduationDesign\autodl-tmp\GraduationProject\runs\detect\yolov8m_aug_lowMixup015_ham_univ30_augMM_e100\weights\best.pt,D:\GraduationDesign\autodl-tmp\GraduationProject\GraduationResults\00_data_augmentation\yolov8m_aug_lowMixup015_ham_univ30_augMM_e100\data_runtime_test.yaml

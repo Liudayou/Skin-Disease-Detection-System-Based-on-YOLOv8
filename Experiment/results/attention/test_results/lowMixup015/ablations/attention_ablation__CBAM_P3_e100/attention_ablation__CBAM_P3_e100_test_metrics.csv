@@ -1,0 +1,2 @@
+Model,Precision,Recall,mAP@50,mAP@50-95,Fitness,Params (M),GFLOPs,Latency_Inference (ms)
+attention_ablation__CBAM_P3_e100,0.6962,0.7658,0.7692,0.4902,0.4902,25.87,79.1,2.13

@@ -1,0 +1,2 @@
+Model,Precision,Recall,mAP@50,mAP@50-95,Fitness,Params (M),GFLOPs,Latency_Inference (ms)
+attention_ablation__ECA_P4_e100,0.7978,0.7032,0.7879,0.5133,0.5133,25.86,79.09,1.86

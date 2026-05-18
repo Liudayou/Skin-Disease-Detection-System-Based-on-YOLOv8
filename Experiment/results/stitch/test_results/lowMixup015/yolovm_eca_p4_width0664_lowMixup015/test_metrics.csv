@@ -1,0 +1,2 @@
+split,mAP50,mAP50_95,precision_mean,recall_mean,weights,data_yaml
+test,0.8003916155798214,0.5210321824484678,0.7158016562650075,0.7980835702470156,/root/autodl-tmp/GraduationProject/SkinSystem/Experiment/runs/detect/combination/train_results/scheme5_eca_p4_width0664_lowMixup015/scheme5_eca_p4_width0664_lowMixup015_e100/weights/best.pt,/root/autodl-tmp/GraduationProject/SkinSystem/Experiment/results/combination/train_results/scheme5_eca_p4_width0664_lowMixup015/scheme5_eca_p4_width0664_lowMixup015_e100/data_runtime.yaml

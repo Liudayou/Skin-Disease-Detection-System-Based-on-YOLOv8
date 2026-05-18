@@ -240,7 +240,6 @@ python tools/export_final_metrics_from_run.py --run-name <实验名> --data-root
 | ECA | `eca_attention.py` | Efficient Channel Attention |
 | EMA | `ema_attention.py` | Efficient Multi-scale Attention |
 | PConv | `pconv_fasternet.py` | Partial Convolution（FasterNet 轻量化卷积） |
-| C2f_Faster | `c2f_faster.py` | FasterNet 风格的 C2f 模块 |
 | GhostNet | `lightweight_blocks.py` | GhostNet Backbone 模块 |
 | MobileNetV3 | `mobilenetv3_backbone.py` | MobileNetV3-Large Backbone（基于 timm） |
 

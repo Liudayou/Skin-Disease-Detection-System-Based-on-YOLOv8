@@ -51,28 +51,44 @@ Experiment/
 
 ## 三、环境配置
 
+注意：涉及到路径（如 `cd ...`、依赖安装、启动服务）的命令，请根据你机器上的实际存放位置调整。
+
+建议先设置一个项目根目录变量，后续所有命令统一用它，避免到处改路径：
+
+```powershell
+# TODO: 把这里改成你自己的 SkinSystem 实际路径
+$PROJECT_ROOT = "D:\root\autodl-tmp\GraduationProject\SkinSystem"
+cd $PROJECT_ROOT
+```
+
 ### 3.1 Python 环境
 
-```bash
-# 创建 conda 环境（GPU 版 PyTorch）
-conda create -n skin_yolov8 python=3.10
+```powershell
+# 创建/进入 conda 环境（Windows 推荐 Python 3.11；若已存在可跳过 create）
+conda create -n skin_yolov8 python=3.11 -y
 conda activate skin_yolov8
 
-# 安装 PyTorch（CUDA 12.x，按实际 CUDA 版本调整）
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+# 关键：禁止加载用户目录 site-packages，避免 torch/pip 串包导致 DLL 报错
+$env:PYTHONNOUSERSITE=1
+
+# 安装 PyTorch（CUDA 12.x，按实际 CUDA 版本调整；无 GPU 可将 cu121 换成 cpu）
+python -m pip install --upgrade pip
+python -m pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
 
 # 安装后端依赖
-pip install -r Experiment/skin_lesion_fullstack/backend/requirements.txt
+cd $PROJECT_ROOT
+python -m pip install -r Experiment/skin_lesion_fullstack/backend/requirements.txt
 ```
 
 > 如果需要训练实验，还需安装 `timm`：
 > ```bash
-> pip install timm
+> python -m pip install timm
 > ```
 
 ### 3.2 前端环境
 
-```bash
+```powershell
+cd $PROJECT_ROOT
 cd Experiment/skin_lesion_fullstack/frontend
 npm install
 ```
@@ -90,14 +106,17 @@ npm install
 **终端 1 — 后端：**
 ```powershell
 conda activate skin_yolov8
-cd d:\SkinSystem\Experiment\skin_lesion_fullstack\backend
+$env:PYTHONNOUSERSITE=1
+cd $PROJECT_ROOT
+cd Experiment/skin_lesion_fullstack/backend
 python app.py
 # 默认端口 5000
 ```
 
 **终端 2 — 前端：**
 ```powershell
-cd d:\SkinSystem\Experiment\skin_lesion_fullstack\frontend
+cd $PROJECT_ROOT
+cd Experiment/skin_lesion_fullstack/frontend
 npm run dev
 # 默认端口 6006
 ```
@@ -107,11 +126,14 @@ npm run dev
 ### 方式二：单端口部署（构建后由 Flask 托管）
 
 ```powershell
-cd d:\SkinSystem\Experiment\skin_lesion_fullstack\frontend
+cd $PROJECT_ROOT
+cd Experiment/skin_lesion_fullstack/frontend
 npm run build
 
 conda activate skin_yolov8
-cd d:\SkinSystem\Experiment\skin_lesion_fullstack\backend
+$env:PYTHONNOUSERSITE=1
+cd $PROJECT_ROOT
+cd Experiment/skin_lesion_fullstack/backend
 python app.py
 ```
 
@@ -152,7 +174,8 @@ python app.py
 
 ```powershell
 conda activate skin_yolov8
-cd d:\SkinSystem\Experiment\scripts
+cd $PROJECT_ROOT
+cd Experiment/scripts
 
 # 注意力消融 — CBAM 注意力插入 Neck
 python attention/train_yolov8m_cbam_neck.py --epochs 100 --batch 64
@@ -189,7 +212,8 @@ python model_scaling/train_yolov8m_default_aug.py --epochs 100 --batch 64
 ### 评估工具
 
 ```powershell
-cd d:\SkinSystem\Experiment\scripts
+cd $PROJECT_ROOT
+cd Experiment/scripts
 
 # 批量 test 评估
 python tools/eval_test_all.py
@@ -232,7 +256,7 @@ python tools/export_final_metrics_from_run.py --run-name <实验名> --data-root
 
 ## 八、自定义模块说明
 
-`scripts/modules/` 中包含以下自定义算子，训练和推理时自动注册到 Ultralytics：
+`Experiment/scripts/modules/` 中包含以下自定义算子，训练和推理时自动注册到 Ultralytics：
 
 | 模块 | 文件 | 说明 |
 |------|------|------|
@@ -240,6 +264,7 @@ python tools/export_final_metrics_from_run.py --run-name <实验名> --data-root
 | ECA | `eca_attention.py` | Efficient Channel Attention |
 | EMA | `ema_attention.py` | Efficient Multi-scale Attention |
 | PConv | `pconv_fasternet.py` | Partial Convolution（FasterNet 轻量化卷积） |
+| C2f_Faster | `c2f_faster.py` | FasterNet 风格的 C2f 模块 |
 | GhostNet | `lightweight_blocks.py` | GhostNet Backbone 模块 |
 | MobileNetV3 | `mobilenetv3_backbone.py` | MobileNetV3-Large Backbone（基于 timm） |
 
@@ -247,7 +272,7 @@ python tools/export_final_metrics_from_run.py --run-name <实验名> --data-root
 
 ## 九、权重文件
 
-最终部署权重位于 `weights/stitch/` 及对应实验目录：
+最终部署权重位于 `Experiment/weights/stitch/` 及对应实验目录：
 
 | 权重文件 | 参数量 | 说明 |
 |----------|--------|------|
@@ -262,7 +287,7 @@ python tools/export_final_metrics_from_run.py --run-name <实验名> --data-root
 数据集采用 YOLO 格式，目录结构：
 
 ```
-dataset/
+Experiment/dataset/
 ├── train/
 │   ├── images/
 │   └── labels/
@@ -293,8 +318,24 @@ dataset/
 **Q: CUDA 不可用，回退到 CPU 推理？**
 A: 检查 PyTorch 是否安装了 GPU 版本：`python -c "import torch; print(torch.cuda.is_available())"`。如果是 CPU 版，需要重新安装：`pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121`
 
+**Q: Windows 启动后端时报 WinError 1114 / c10.dll（DLL 初始化失败）？**
+A: 通常是 **torch/pip 从用户目录 site-packages 被加载（串包）** 或缺少运行库导致。
+
+先确认 torch 来自哪里（应当是 conda 环境目录，而不是 `C:\Users\...\AppData\Roaming\...`）：
+
+```powershell
+conda activate skin_yolov8
+$env:PYTHONNOUSERSITE=1
+python -c "import sys,torch; print(sys.executable); print(torch.__file__)"
+```
+
+若仍失败：
+1) 确保已设置 `$env:PYTHONNOUSERSITE=1` 后再运行/安装依赖；
+2) 若系统缺少依赖 DLL，安装/修复 **Microsoft Visual C++ 2015-2022 Redistributable (x64)**；
+3) 如果你装的是 GPU 版 torch，确认显卡驱动与 CUDA 版本匹配；不需要 GPU 可改装 CPU 版（index-url 改为 `/cpu`）。
+
 **Q: 加载 CBAM 权重报错？**
-A: 确保 `scripts/` 目录在 Python 路径中，后端 `app.py` 会自动注册自定义算子。如果是独立脚本，需手动 `from modules.cbam_attention import register_cbam_for_ultralytics; register_cbam_for_ultralytics()`
+A: 确保 `Experiment/scripts/` 目录在 Python 路径中，后端 `app.py` 会自动注册自定义算子。如果是独立脚本，需手动 `from modules.cbam_attention import register_cbam_for_ultralytics; register_cbam_for_ultralytics()`
 
 **Q: AI 诊断 503 错误？**
 A: 前往「系统设置」配置 API Key。模型名必须小写，如 `mimo-v2.5-pro`。
